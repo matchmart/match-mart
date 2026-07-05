@@ -3,8 +3,52 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useAuth } from "@/context/AuthContext";
+import axiosInstance from "@/services/axiosInstance";
 import type { LoginPayload } from "@/types/auth";
-const msg=(e:unknown,f:string)=>axios.isAxiosError<{message?:string}>(e)?e.response?.data?.message||e.message||f:e instanceof Error?e.message:f;
-const AdminLoginPage=()=>{const {adminLogin}=useAuth();const nav=useNavigate();const [sub,setSub]=useState(false);const {register,handleSubmit}=useForm<LoginPayload>();const onSubmit=async(d:LoginPayload)=>{setSub(true);try{await adminLogin(d);nav('/admin/dashboard')}catch(e){toast.error(msg(e,'Admin login failed'))}finally{setSub(false)}};return <div className="flex min-h-screen items-center justify-center bg-secondary px-4"><div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl"><h1 className="text-center text-2xl font-bold text-secondary">Admin Access</h1><form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-4"><input type="email" placeholder="Admin email" className="w-full rounded-lg border px-4 py-3" {...register('email',{required:true})}/><input type="password" placeholder="Password" className="w-full rounded-lg border px-4 py-3" {...register('password',{required:true})}/><button disabled={sub} className="w-full rounded-lg bg-secondary py-3 font-semibold text-white">{sub?'Checking...':'Login to Dashboard'}</button></form></div></div>};
+
+const msg = (e: unknown, f: string) =>
+  axios.isAxiosError<{ message?: string }>(e)
+    ? e.response?.data?.message || e.message || f
+    : e instanceof Error
+      ? e.message
+      : f;
+
+const AdminLoginPage = () => {
+  const nav = useNavigate();
+  const [sub, setSub] = useState(false);
+  const { register, handleSubmit } = useForm<LoginPayload>();
+
+  const onSubmit = async (d: LoginPayload) => {
+    setSub(true);
+    try {
+      const response = await axiosInstance.post("/auth/admin/login", d);
+      const token = response.data?.token;
+      if (token) localStorage.setItem("match_mart_token", token);
+      toast.success("Admin login successful");
+      nav("/admin/dashboard");
+    } catch (e) {
+      const errorData = axios.isAxiosError(e) ? e.response?.data : e instanceof Error ? e.message : e;
+      console.log(errorData);
+      toast.error(msg(e, "Admin login failed"));
+    } finally {
+      setSub(false);
+    }
+  };
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-secondary px-4">
+      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl">
+        <h1 className="text-center text-2xl font-bold text-secondary">Admin Access</h1>
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-4">
+          <input type="email" placeholder="Admin email" className="w-full rounded-lg border px-4 py-3" {...register("email", { required: true })} />
+          <input type="password" placeholder="Password" className="w-full rounded-lg border px-4 py-3" {...register("password", { required: true })} />
+          <button disabled={sub} className="w-full rounded-lg bg-secondary py-3 font-semibold text-white">
+            {sub ? "Checking..." : "Login to Dashboard"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 export default AdminLoginPage;
