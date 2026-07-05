@@ -1,0 +1,3 @@
+import { Link } from "react-router-dom";
+const Footer = () => <footer className="border-t border-gray-100 bg-white"><div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 text-sm text-secondary/60 sm:flex-row sm:items-center sm:justify-between"><p>© {new Date().getFullYear()} Match Mart. All rights reserved.</p><div className="flex gap-4"><Link to="/products" className="hover:text-primary">Products</Link><Link to="/categories" className="hover:text-primary">Categories</Link><Link to="/branches" className="hover:text-primary">Branches</Link></div></div></footer>;
+export default Footer;

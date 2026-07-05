@@ -1,0 +1,10 @@
+import { Router } from "express";
+import { getSettings, updateSettings, uploadFavicon, uploadLogo } from "../controllers/settingsController";
+import { protect, isAdmin } from "../middleware/authMiddleware";
+import { upload } from "../middleware/uploadMiddleware";
+const router = Router();
+router.get("/", getSettings);
+router.put("/", protect, isAdmin, updateSettings);
+router.post("/logo", protect, isAdmin, upload.single("logo"), uploadLogo);
+router.post("/favicon", protect, isAdmin, upload.single("favicon"), uploadFavicon);
+export default router;

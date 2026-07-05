@@ -1,0 +1,10 @@
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useAuth } from "@/context/AuthContext";
+import type { RegisterPayload } from "@/types/auth";
+const msg=(e:unknown,f:string)=>axios.isAxiosError<{message?:string}>(e)?e.response?.data?.message||e.message||f:e instanceof Error?e.message:f;
+const RegisterPage=()=>{const {register:signup}=useAuth();const nav=useNavigate();const [sub,setSub]=useState(false);const {register,handleSubmit,formState:{errors}}=useForm<RegisterPayload>();const onSubmit=async(d:RegisterPayload)=>{setSub(true);try{await signup(d);toast.success('Account created');nav('/profile')}catch(e){toast.error(msg(e,'Register failed'))}finally{setSub(false)}};return <div className="mx-auto max-w-md px-4 py-16"><h1 className="text-2xl font-bold text-secondary">Create account</h1><form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4"><input placeholder="Name" className="w-full rounded-lg border px-4 py-3" {...register('name',{required:'Name required'})}/>{errors.name&&<p className="text-xs text-red-500">{errors.name.message}</p>}<input type="email" placeholder="Email" className="w-full rounded-lg border px-4 py-3" {...register('email',{required:'Email required'})}/><input type="password" placeholder="Password" className="w-full rounded-lg border px-4 py-3" {...register('password',{required:'Password required',minLength:{value:6,message:'Minimum 6 characters'}})}/><button disabled={sub} className="w-full rounded-lg bg-primary py-3 font-semibold text-white">{sub?'Creating...':'Register'}</button></form><p className="mt-4 text-sm text-secondary/60">Already have an account? <Link className="text-primary" to="/login">Login</Link></p></div>};
+export default RegisterPage;

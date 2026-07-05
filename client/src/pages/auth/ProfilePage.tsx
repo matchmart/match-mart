@@ -1,0 +1,6 @@
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useAuth } from "@/context/AuthContext";
+import type { ChangePasswordPayload } from "@/types/auth";
+const ProfilePage=()=>{const {user,changePassword}=useAuth();const {register,handleSubmit,reset}=useForm<ChangePasswordPayload>();const onSubmit=async(d:ChangePasswordPayload)=>{await changePassword(d);toast.success('Password updated');reset()};return <div className="mx-auto max-w-2xl px-4 py-12"><h1 className="text-2xl font-bold text-secondary">Profile</h1><div className="mt-6 rounded-2xl border p-6"><p><b>Name:</b> {user?.name}</p><p><b>Email:</b> {user?.email}</p></div><form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4 rounded-2xl border p-6"><h2 className="font-semibold">Change Password</h2><input type="password" placeholder="Current password" className="w-full rounded-lg border px-4 py-3" {...register('currentPassword',{required:true})}/><input type="password" placeholder="New password" className="w-full rounded-lg border px-4 py-3" {...register('newPassword',{required:true,minLength:6})}/><button className="rounded-lg bg-primary px-5 py-3 font-semibold text-white">Update</button></form></div>};
+export default ProfilePage;

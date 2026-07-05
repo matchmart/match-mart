@@ -1,0 +1,10 @@
+import { Router } from "express";
+import { adminLogin, changePassword, getMe, login, register } from "../controllers/authController";
+import { protect } from "../middleware/authMiddleware";
+const router = Router();
+router.post("/register", register);
+router.post("/login", login);
+router.post("/admin-login", adminLogin);
+router.get("/me", protect, getMe);
+router.put("/change-password", protect, changePassword);
+export default router;

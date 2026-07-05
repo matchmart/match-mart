@@ -1,0 +1,32 @@
+{
+  "scripts": {
+    "dev": "node --max-old-space-size=4096 ./node_modules/tsx/dist/cli.mjs watch src/server.ts",
+    "build": "node --max-old-space-size=4096 ./node_modules/typescript/bin/tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "seed:admin": "node --max-old-space-size=4096 ./node_modules/tsx/dist/cli.mjs src/utils/seedAdmin.ts"
+  },
+  "dependencies": {
+    "bcryptjs": "latest",
+    "cloudinary": "latest",
+    "cookie-parser": "latest",
+    "cors": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "helmet": "latest",
+    "jsonwebtoken": "latest",
+    "mongoose": "latest",
+    "morgan": "latest",
+    "multer": "latest"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "latest",
+    "@types/cors": "latest",
+    "@types/express": "latest",
+    "@types/jsonwebtoken": "latest",
+    "@types/morgan": "latest",
+    "@types/multer": "latest",
+    "@types/node": "latest",
+    "tsx": "latest",
+    "typescript": "latest"
+  }
+}

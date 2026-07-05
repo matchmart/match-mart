@@ -1,0 +1,5 @@
+import { Link } from "react-router-dom";
+import { FiGrid, FiMapPin, FiSettings, FiShoppingBag } from "react-icons/fi";
+const cards=[{label:'Products',to:'/admin/products',icon:FiShoppingBag},{label:'Categories',to:'/admin/categories',icon:FiGrid},{label:'Branches',to:'/admin/branches',icon:FiMapPin},{label:'Settings',to:'/admin/settings',icon:FiSettings}];
+const AdminDashboardPage=()=> <div><h1 className="text-2xl font-bold text-secondary">Dashboard</h1><p className="mt-1 text-sm text-secondary/60">Manage Match Mart content.</p><div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">{cards.map(({label,to,icon:Icon})=><Link key={to} to={to} className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md"><div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary"><Icon size={20}/></div><p className="mt-4 font-semibold text-secondary">{label}</p><p className="mt-1 text-xs text-secondary/40">Open manager</p></Link>)}</div></div>;
+export default AdminDashboardPage;
