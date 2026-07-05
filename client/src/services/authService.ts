@@ -10,7 +10,7 @@ export const login = async (payload: LoginPayload): Promise<AuthResponse> => {
   return data;
 };
 export const adminLogin = async (payload: LoginPayload): Promise<AuthResponse> => {
-  const { data } = await axiosInstance.post("/auth/admin-login", payload);
+  const { data } = await axiosInstance.post("/auth/admin/login", payload);
   return data;
 };
 export const getMe = async (): Promise<{ success: boolean; user: User }> => {
